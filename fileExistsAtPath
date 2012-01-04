@@ -1,0 +1,11 @@
+--NAME: fileExistsAtPath 
+--VERSION:
+--PURPOSE: checks if file exists given a file path 
+--HISTORY: Created 2012.01.04 by Hanzel Morato, hanz@beezwax.net
+--NOTES:
+
+to fileExistsAtPath(filePath)
+	set cmd to "if test -e '" & filePath & "' ; then echo 1 ; else echo 0 ; fi"
+	set file_exists to ((do shell script cmd) as integer) as boolean
+	return file_exists
+end fileExistsAtPath
