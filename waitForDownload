@@ -1,0 +1,52 @@
+--NAME: waitForDownload 
+--VERSION:
+--PURPOSE: waits until file is completely downloaded from Safari 
+--HISTORY: Created 2012.01.04 by Hanzel Morato, hanz@beezwax.net
+--NOTES: 
+
+to waitForDownload(filename, delayDuration)
+	set basePath to ("/Users/" & (do shell script "whoami"))
+	set downloadComplete to false
+	set maxIteration to 12
+	
+	set i to 1
+	
+	--repeat while downloadComplete is false
+	repeat
+		-- check .download at Desktop
+		set filePath to basePath & "/Desktop/" & filename & ".download"
+		if fileExistsAtPath(filePath) then
+			delay delayDuration
+		end if
+		
+		-- check .download at Downloads
+		set filePath to basePath & "/Downloads/" & filename & ".download"
+		if fileExistsAtPath(filePath) then
+			delay delayDuration
+		end if
+		
+		-- check for download complete at Desktop
+		set filePath to basePath & "/Desktop/" & filename
+		if fileExistsAtPath(filePath) then
+			set downloadComplete to true
+		end if
+		
+		-- check for download complete at Downloads
+		set filePath to basePath & "/Downloads/" & filename
+		if fileExistsAtPath(filePath) then
+			set downloadComplete to true
+		end if
+		
+		set i to i + 1
+		
+		if i is greater than maxIteration and downloadComplete is false then
+			display dialog (i)
+			return "ERROR: download was too large"
+		end if
+		
+		if downloadComplete is true then
+			return filePath
+		end if
+		
+	end repeat
+end waitForDownload
