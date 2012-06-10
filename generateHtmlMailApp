@@ -1,0 +1,26 @@
+set theSubject to "<<subject>>"
+set theAddress to "<<to>>"
+
+
+set theHTML to "
+<<message>>
+"
+
+tell application "Mail"
+	activate
+	
+	set theMessage to make new outgoing message with properties {subject:theSubject, html content:theHTML, visible:false}
+	tell theMessage
+		-- make new to recipient at end of to recipients with properties {name:theName, address:theAddress}
+		make new to recipient at end of to recipients with properties {address:theAddress}
+		set visible to true
+		
+	end tell
+	
+	-- Save the composed message as draft (you could also send here)
+	save theMessage -- Need to open twice as draft (?!) to see HTML version.
+	delay 1
+	set theMessage to first message of drafts mailbox
+	open theMessage
+	
+end tell
