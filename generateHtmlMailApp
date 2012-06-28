@@ -1,26 +1,25 @@
-set theSubject to "<<subject>>"
 set theAddress to "<<to>>"
-
-
+set theSubject to "<<subject>>"
 set theHTML to "
 <<message>>
 "
+--set file_att to choose file
+
 
 tell application "Mail"
-	activate
+	set theMessage to (a reference to (make new outgoing message at beginning of outgoing messages))
 	
-	set theMessage to make new outgoing message with properties {subject:theSubject, html content:theHTML, visible:false}
 	tell theMessage
-		-- make new to recipient at end of to recipients with properties {name:theName, address:theAddress}
-		make new to recipient at end of to recipients with properties {address:theAddress}
-		set visible to true
+		make new to recipient at beginning of to recipients with properties {address:theAddress}
+		set the subject to theSubject
+		set the html content to theHTML
 		
 	end tell
 	
-	-- Save the composed message as draft (you could also send here)
-	save theMessage -- Need to open twice as draft (?!) to see HTML version.
-	delay 1
-	set theMessage to first message of drafts mailbox
-	open theMessage
+	save theMessage
 	
+	-- saving to drafts hides send button. only option 
+	--set theMessage to first message of drafts mailbox
+	
+	--send theMessage
 end tell
